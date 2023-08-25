@@ -40,29 +40,30 @@ Follow these instructions to get the project up and running on your local machin
 <code>server - nodemon index.js</code>
 
 5. Run the Server commented Code Once to Populate Database
-  ![image](https://github.com/dhamkirti21/Social-Media-Application/assets/78336507/f2505769-df40-4a98-8818-181109710821)
+  ![image](https://github.com/dhamkirti21/SocialMediaApplication/assets/78336507/840d3b34-cc11-4974-a41c-ff0cc717434f)
 
-5. Open your browser and visit `http://localhost:3000` to see the application.
+6. Open your browser and visit `http://localhost:3000` to see the application.
 
 ## ScreenShot 
 
 1. Login Page
-![image](https://github.com/dhamkirti21/Social-Media-Application/assets/78336507/77751374-bb3c-4c40-b585-553977a3cd38)
+![image](https://github.com/dhamkirti21/SocialMediaApplication/assets/78336507/b3b9d86c-eb95-4a8c-8bc3-431aadafa9da)
 
 2.Register Page
-![image](https://github.com/dhamkirti21/Social-Media-Application/assets/78336507/940536cf-3b37-4fd7-8dd6-4993dd44b8cf)
+![web-screenshot-25-08-2023](https://github.com/dhamkirti21/SocialMediaApplication/assets/78336507/2cd87ecb-286c-49a2-9a72-772102e76436)
 
 3.Home Page 
-![image](https://github.com/dhamkirti21/Social-Media-Application/assets/78336507/aed6dd6f-d329-4ec6-b289-a1c39aa321c5)
+![web-screenshot-25-08-2023 (2)](https://github.com/dhamkirti21/SocialMediaApplication/assets/78336507/3a459da2-3e12-441e-967e-4c2bdbf29897)
 
 4.Profile Page
 ![image](https://github.com/dhamkirti21/Social-Media-Application/assets/78336507/f9ade35a-e467-43a9-874b-f5856c8cb88e)
 
 5.NavBar 
-![image](https://github.com/dhamkirti21/Social-Media-Application/assets/78336507/e5c74558-6385-44f0-90b9-3faa377c14e7)
+![web-screenshot-25-08-2023 (3)](https://github.com/dhamkirti21/SocialMediaApplication/assets/78336507/a7f5acd0-de95-4bb8-89b8-f6303d371455)
 
 ## Deployed Link: 
-https://radiant-gnome-9b7202.netlify.app/
+
+https://sociopedia001.netlify.app/
 
 ## Contributing
 
