@@ -63,7 +63,7 @@ Follow these instructions to get the project up and running on your local machin
 
 ## Deployed Link: 
 
-https://sociopedia001.netlify.app/
+Link to the Proejct : social-media-application-qs7a3v72z-dhamkirti21.vercel.app
 
 ## Contributing
 
