@@ -9,45 +9,19 @@ import {
 } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
-import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import BACKEND_URL from "enviroment/env";
+import { registerSchema, loginSchema } from "constants/schema";
+import { initialValuesRegister, initialValuesLogin } from "constants/intialValues";
 
-const registerSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-  location: yup.string().required("required"),
-  occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
-});
-
-const loginSchema = yup.object().shape({
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-});
-
-const initialValuesRegister = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  location: "",
-  occupation: "",
-  picture: "",
-};
-
-const initialValuesLogin = {
-  email: "",
-  password: "",
-};
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
+  const [alertMessage, setAlertMessage] = useState();
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,37 +37,57 @@ const Form = () => {
     }
     formData.append("picturePath", values.picture.name);
 
-    const savedUserResponse = await fetch(
-      "http://localhost:5000/auth/register",
+    const UserResponse = await fetch(
+      `${BACKEND_URL}/auth/register`,
       {
         method: "POST",
         body: formData,
       }
     );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
 
-    if (savedUser) {
-      setPageType("login");
+    if (UserResponse.status === 201) {
+      const savedUser = await UserResponse.json();
+      onSubmitProps.resetForm();
+      if (savedUser) {
+        alert("User Succesfully Registered");
+        setPageType("login");
+      }
+    }
+
+    else {
+      const errorMessage = await UserResponse.json();
+      setAlertMessage(errorMessage.error || errorMessage.errors);
+      onSubmitProps.resetForm();
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:5000/auth/login", {
+    const loggedInResponse = await fetch(`${BACKEND_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/home");
+
+    if (loggedInResponse.status === 200) {
+      const loggedIn = await loggedInResponse.json();
+      if (loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        navigate("/home");
+      }
+    } else {
+      onSubmitProps.resetForm();
+      const errorMessage = await loggedInResponse.json();
+      if (loggedInResponse.status === 400) {
+        setAlertMessage(errorMessage.msg);
+      }
+      else {
+        setAlertMessage(errorMessage.error);
+      }
     }
   };
 
@@ -127,8 +121,19 @@ const Form = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
+
+
             {isRegister && (
               <>
+                {
+                  alertMessage ? (
+                    <Typography variant="p" style={{
+                      gridColumn: "span 4",
+                      color: "red"
+                    }}>{alertMessage}</Typography>
+                  ) : (<></>)
+                }
+
                 <TextField
                   label="First Name"
                   onBlur={handleBlur}
@@ -208,6 +213,15 @@ const Form = () => {
                 </Box>
               </>
             )}
+
+            {
+              alertMessage && isLogin ? (
+                <Typography variant="p" style={{
+                  gridColumn: "span 4",
+                  color: "red"
+                }}>{alertMessage}</Typography>
+              ) : (<></>)
+            }
 
             <TextField
               label="Email"

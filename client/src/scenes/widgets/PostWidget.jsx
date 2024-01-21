@@ -9,6 +9,7 @@ import { Box, Divider, IconButton, InputBase, Typography, useTheme } from "@mui/
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
+import BACKEND_URL from "enviroment/env";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
@@ -30,7 +31,7 @@ const PostWidget = ({
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
-  const [comment , setComment]  = useState("");
+  const [comment, setComment] = useState("");
 
 
   const { palette } = useTheme();
@@ -38,7 +39,7 @@ const PostWidget = ({
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:5000/posts/${postId}/like`, {
+    const response = await fetch(`${BACKEND_URL}/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -51,23 +52,23 @@ const PostWidget = ({
   };
 
 
-  const sendComment = async() =>{
-     if(comment){
-      const response = await fetch(`http://localhost:5000/posts/${postId}/comment`, {
+  const sendComment = async () => {
+    if (comment) {
+      const response = await fetch(`${BACKEND_URL}/posts/${postId}/comment`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment : comment }),
+        body: JSON.stringify({ comment: comment }),
       });
       const updatedPost = await response.json();
       console.log(updatedPost);
       dispatch(setPost({ post: updatedPost }));
-     }
+    }
   }
-  
-     
+
+
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -86,7 +87,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:5000/assets/${picturePath}`}
+          src={`${BACKEND_URL}/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
@@ -116,21 +117,21 @@ const PostWidget = ({
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
-         <Box mt="0.3rem" p="0.25rem">
-         {/*COMMENT BOX*/}
-      
+          <Box mt="0.3rem" p="0.25rem">
+            {/*COMMENT BOX*/}
+
             <FlexBetween
-            backgroundColor="#5A5A5A"
-            borderRadius="9px"
-            gap="3rem"
-            padding="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Comment Down..." onChange={(e)=>setComment(e.target.value)} />
-            <IconButton onClick={sendComment} >
-              <SendOutlined/>
-            </IconButton>
-          </FlexBetween>
-         </Box>
+              backgroundColor="#5A5A5A"
+              borderRadius="9px"
+              gap="3rem"
+              padding="0.1rem 1.5rem"
+            >
+              <InputBase placeholder="Comment Down..." onChange={(e) => setComment(e.target.value)} />
+              <IconButton onClick={sendComment} >
+                <SendOutlined />
+              </IconButton>
+            </FlexBetween>
+          </Box>
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />

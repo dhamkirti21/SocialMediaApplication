@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { json, useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import BACKEND_URL from "enviroment/env";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -49,7 +50,7 @@ const Navbar = () => {
        setSearchQuery(e.target.value);
      }
 
-     const fetchSearch = await fetch(`http://localhost:5000/users/search/${searchQuery}/`, {
+     const fetchSearch = await fetch(`${BACKEND_URL}/users/search/${searchQuery}/`, {
        method:"GET",
        headers : {
         'Content-Type': 'application/json',

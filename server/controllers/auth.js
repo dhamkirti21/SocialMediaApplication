@@ -32,9 +32,17 @@ export const register = async (req, res) => {
       impressions: 0,
     });
     const savedUser = await newUser.save();
+    if (!savedUser) {
+      throw Error("User Registration Failed");
+    }
     res.status(201).json(savedUser);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err.message.includes("duplicate")) {
+      res.status(400).json({ error: "Email Already Registered" });
+    } else {
+      // Other types of errors (e.g., server error)
+      res.status(500).json({ error: err.message });
+    }
   }
 };
 
@@ -55,6 +63,3 @@ export const login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
-
