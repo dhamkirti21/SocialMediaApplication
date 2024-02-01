@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import fileUploader from "../utils/fileUploader.js";
 import User from "../models/User.js";
 
 /* REGISTER USER */
@@ -18,19 +19,23 @@ export const register = async (req, res) => {
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
+    const fileBuffer = req.file.buffer;
+    const newFile = await fileUploader(fileBuffer, picturePath);
+    const newPicturePath = `v${newFile.version}/${newFile.public_id}`;
 
     const newUser = new User({
       firstName,
       lastName,
       email,
       password: passwordHash,
-      picturePath,
+      picturePath: newPicturePath,
       friends,
       location,
       occupation,
       viewedProfile: 0,
       impressions: 0,
     });
+
     const savedUser = await newUser.save();
     if (!savedUser) {
       throw Error("User Registration Failed");
@@ -41,6 +46,7 @@ export const register = async (req, res) => {
       res.status(400).json({ error: "Email Already Registered" });
     } else {
       // Other types of errors (e.g., server error)
+      console.error(err);
       res.status(500).json({ error: err.message });
     }
   }

@@ -8,12 +8,16 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import * as cloudinary from "cloudinary";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
+// import User from "./models/User.js";
+// import Post from "./models/Post.js";
+// import { users, posts } from "./data/data.js";
 
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
@@ -29,16 +33,16 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
-/* FILE STORAGE */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets/user_images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
+/* CLOUDINARY SETUP */
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
-const upload = multer({ storage });
+
+/* FILE STORAGE */
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 /* ROUTES WITH FILES */
 app.post("/auth/register", upload.single("picture"), register);
@@ -57,14 +61,20 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 6001;
 mongoose
   .connect(process.env.MONGO_URL, {
+    dbName: process.env.DB_NAME,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
-
+    app.listen(PORT, () => {
+      console.log(`Server Port: ${PORT}`);
+    });
     /* ADD DATA ONE TIME */
-    // User.insertMany(users);
-    // Post.insertMany(posts);
+    // User.insertMany(users).then(() => {
+    //   console.log("All Users Uploaded!!");
+    // });
+    // Post.insertMany(posts).then(() => {
+    //   console.log("All Posts Uploaded!!");
+    // });
   })
   .catch((error) => console.log(`${error} did not connect`));

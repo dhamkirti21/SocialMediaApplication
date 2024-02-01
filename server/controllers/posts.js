@@ -1,11 +1,16 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import fileUploader from "../utils/fileUploader.js";
 
 /* CREATE */
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath } = req.body;
     const user = await User.findById(userId);
+    const fileBuffer = req.file.buffer;
+    const newFile = await fileUploader(fileBuffer, picturePath);
+    const newPicturePath = `v${newFile.version}/${newFile.public_id}`;
+
     const newPost = new Post({
       userId,
       firstName: user.firstName,
@@ -13,7 +18,7 @@ export const createPost = async (req, res) => {
       location: user.location,
       description,
       userPicturePath: user.picturePath,
-      picturePath,
+      picturePath: newPicturePath,
       likes: {},
       comments: [],
     });
@@ -65,7 +70,6 @@ export const likePost = async (req, res) => {
       { likes: post.likes },
       { new: true }
     );
-     
 
     res.status(200).json(updatedPost);
   } catch (err) {
@@ -73,18 +77,17 @@ export const likePost = async (req, res) => {
   }
 };
 
-export const addComment = async(req,res)=>{
+export const addComment = async (req, res) => {
   try {
     const { id } = req.params;
     const { comment } = req.body;
     const post = await Post.findById(id);
-    
+
     post.comments.unshift(comment);
-    
 
     const updatedPost = await Post.findByIdAndUpdate(
       id,
-      { comments : post.comments },
+      { comments: post.comments },
       { new: true }
     );
 
@@ -92,4 +95,4 @@ export const addComment = async(req,res)=>{
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
-}
+};

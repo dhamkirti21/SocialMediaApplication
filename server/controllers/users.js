@@ -75,3 +75,12 @@ export const addRemoveFriend = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+export const getUserBySearch = (req,res)=>{
+ try {
+    const { } = req.params;
+   
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
