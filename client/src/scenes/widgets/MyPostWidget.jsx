@@ -25,11 +25,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
+import LoadingState from "components/LoadingState/LoadingState";
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
@@ -46,7 +48,7 @@ const MyPostWidget = ({ picturePath }) => {
       alert("Please Add a Image😎");
       return;
     }
-
+    setIsLoading(true);
     formData.append("picture", image);
     formData.append("picturePath", image.name);
     const response = await fetch(`${BACKEND_URL}/posts`, {
@@ -54,16 +56,23 @@ const MyPostWidget = ({ picturePath }) => {
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
-    const posts = await response.json();
-    dispatch(setPosts({ posts }));
-    setImage(null);
-    setPost("");
+
+    if (response.status === 200) {
+      const posts = await response.json();
+      dispatch(setPosts({ posts }));
+      setImage(null);
+      setPost("");
+      setIsLoading(false);
+    } else {
+      alert(response.body.json());
+    }
   };
 
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
         <UserImage image={picturePath} />
+        {isLoading && <LoadingState message={"Uploading Your Post!!"} />}
         <InputBase
           placeholder="What's on your mind..."
           onChange={(e) => setPost(e.target.value)}
