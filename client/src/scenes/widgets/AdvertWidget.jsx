@@ -1,7 +1,7 @@
 import { Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
-import BACKEND_URL from "enviroment/env";
+import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
 
 const AdvertWidget = () => {
   const { palette } = useTheme();

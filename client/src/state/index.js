@@ -5,6 +5,7 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
+  error: "",
 };
 
 export const authSlice = createSlice({
@@ -39,9 +40,19 @@ export const authSlice = createSlice({
       });
       state.posts = updatedPosts;
     },
+    setError: (state, action) => {
+      state.error = action.payload.error;
+    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
-  authSlice.actions;
+export const {
+  setMode,
+  setLogin,
+  setLogout,
+  setFriends,
+  setPosts,
+  setPost,
+  setError,
+} = authSlice.actions;
 export default authSlice.reducer;

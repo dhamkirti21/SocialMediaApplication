@@ -24,15 +24,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { json, useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
-import BACKEND_URL from "enviroment/env";
+import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
-  const [searchQuery,setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const token = useSelector((state)=>state.token);
+  const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();
@@ -45,20 +45,20 @@ const Navbar = () => {
   const fullName = `${user.firstName} ${user.lastName}`;
 
 
-  const handleSearch = async (e) =>{
-     if(!(e.target.value)){
-       setSearchQuery(e.target.value);
-     }
+  const handleSearch = async (e) => {
+    if (!(e.target.value)) {
+      setSearchQuery(e.target.value);
+    }
 
-     const fetchSearch = await fetch(`${BACKEND_URL}/users/search/${searchQuery}/`, {
-       method:"GET",
-       headers : {
+    const fetchSearch = await fetch(`${BACKEND_URL}/users/search/${searchQuery}/`, {
+      method: "GET",
+      headers: {
         'Content-Type': 'application/json',
-        Authorization:`Bearer ${token}`
-       },
-     })
+        Authorization: `Bearer ${token}`
+      },
+    })
 
-     console.log(fetchSearch)
+    console.log(fetchSearch)
   }
 
   return (
@@ -85,7 +85,7 @@ const Navbar = () => {
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." onChange={handleSearch}/>
+            <InputBase placeholder="Search..." onChange={handleSearch} />
             <IconButton>
               <Search />
             </IconButton>

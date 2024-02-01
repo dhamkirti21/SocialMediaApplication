@@ -1,7 +1,7 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import BACKEND_URL from "enviroment/env";
+import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "state";

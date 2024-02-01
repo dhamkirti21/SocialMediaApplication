@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from "@mui/material";
-import BACKEND_URL from "enviroment/env";
+import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -51,7 +51,7 @@ const ProfilePage = () => {
         >
           <MyPostWidget picturePath={user.picturePath} />
           <Box m="2rem 0" />
-          <PostsWidget userId={userId} isProfile />
+          <PostsWidget userId={userId} isProfile={true} />
         </Box>
       </Box>
     </Box>

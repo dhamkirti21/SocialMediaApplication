@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
-import BACKEND_URL from "enviroment/env";
+import {BACKEND_URL,CLOUD_LINK} from "enviroment/env";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();

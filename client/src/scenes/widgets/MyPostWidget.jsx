@@ -24,7 +24,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
-import BACKEND_URL from "enviroment/env";
+import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
@@ -42,11 +42,13 @@ const MyPostWidget = ({ picturePath }) => {
     const formData = new FormData();
     formData.append("userId", _id);
     formData.append("description", post);
-    if (image) {
-      formData.append("picture", image);
-      formData.append("picturePath", image.name);
+    if (!image) {
+      alert("Please Add a Image😎");
+      return;
     }
 
+    formData.append("picture", image);
+    formData.append("picturePath", image.name);
     const response = await fetch(`${BACKEND_URL}/posts`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
@@ -74,6 +76,7 @@ const MyPostWidget = ({ picturePath }) => {
           }}
         />
       </FlexBetween>
+
       {isImage && (
         <Box
           border={`1px solid ${medium}`}

@@ -9,7 +9,7 @@ import { Box, Divider, IconButton, InputBase, Typography, useTheme } from "@mui/
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import BACKEND_URL from "enviroment/env";
+import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
@@ -78,18 +78,18 @@ const PostWidget = ({
         subtitle={location}
         userPicturePath={userPicturePath}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
-        {description}
-      </Typography>
       {picturePath && (
         <img
           width="100%"
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`${BACKEND_URL}/assets/${picturePath}`}
+          src={`${CLOUD_LINK}/${picturePath}`}
         />
       )}
+      <Typography color={main} sx={{ mb: "1rem", mt: "0.5rem" }}>
+        {description}
+      </Typography>
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
           <FlexBetween gap="0.3rem">

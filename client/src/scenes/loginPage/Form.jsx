@@ -14,14 +14,16 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import BACKEND_URL from "enviroment/env";
+import { BACKEND_URL, CLOUD_LINK } from "enviroment/env";
 import { registerSchema, loginSchema } from "constants/schema";
 import { initialValuesRegister, initialValuesLogin } from "constants/intialValues";
+import LoadingState from "../../components/LoadingState/LoadingState";
 
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
   const [alertMessage, setAlertMessage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,6 +33,7 @@ const Form = () => {
 
   const register = async (values, onSubmitProps) => {
     // this allows us to send form info with image
+    setIsLoading(true);
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
@@ -45,15 +48,15 @@ const Form = () => {
       }
     );
 
+
     if (UserResponse.status === 201) {
       const savedUser = await UserResponse.json();
       onSubmitProps.resetForm();
       if (savedUser) {
-        alert("User Succesfully Registered");
-        setPageType("login");
+        setIsLoading(false);
+        navigate("/confirm");
       }
     }
-
     else {
       const errorMessage = await UserResponse.json();
       setAlertMessage(errorMessage.error || errorMessage.errors);
@@ -121,6 +124,9 @@ const Form = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
+            {
+              isLoading && <LoadingState loading={isLoading} message={"Please Wait , We are Creating Your Profile!!"} />
+            }
 
 
             {isRegister && (

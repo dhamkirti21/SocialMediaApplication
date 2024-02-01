@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
+import ConfirmPage from "scenes/ConfirmPage/ConfirmPage";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -15,7 +16,7 @@ function App() {
   const isAuth = Boolean(useSelector((state) => state.token));
 
   return (
-    <div className="app">
+    <div className="app" style={{loading:"lazy"}}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -25,6 +26,7 @@ function App() {
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
+            <Route path="/confirm" element={<ConfirmPage />} />
             <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
