@@ -1,7 +1,8 @@
 
-# Sociopedia
+# Instapedia
 
-Sociopedia is a social media application built with the MERN (MongoDB, Express.js, React, Node.js) stack. It allows users to connect, share posts, and interact with each other in a dynamic and real-time environment.
+
+Instapedia is a social media application built with the MERN (MongoDB, Express.js, React, Node.js) stack. It allows users to connect, share posts, and interact with each other in a dynamic and real-time environment.
 
 ## Features
 
